@@ -1,11 +1,13 @@
 import { Client, GatewayIntentBits } from "npm:discord.js";
 import { botStatus } from "./status.ts";
 import "./commands/ban/ban.ts";
+import "./commands/ban/unban.ts";
 import "./commands/ban/autoUnban.ts";
 import { banCommand } from "./commands/ban/ban.ts";
 import { commandHandler } from "./commands/commandHandler.ts";
 //@ts-types="npm:@types/mysql"
 import mysql from "npm:mysql";
+import { unbanCommand } from "./commands/ban/unban.ts";
 
 export const connection = mysql.createPool({
   host: Deno.env.get("DB_HOST"),
@@ -18,6 +20,7 @@ const dcBot = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 dcBot.on("ready", async () => {
   console.log("Bot Logged In");
+  dcBot.application?.commands.set([]);
   // botStatus(dcBot);
 
   dcBot.application?.commands
@@ -28,7 +31,14 @@ dcBot.on("ready", async () => {
     .catch((err) => {
       console.error(err);
     });
-  // dcBot.application?.commands.set([]);
+  dcBot.application?.commands
+    .create(unbanCommand(), "1296015106773221417")
+    .then(() => {
+      console.log("Unban Registered");
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 
   // dcBot.application?.commands.delete("1296531015648677961");
 });
