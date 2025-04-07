@@ -23,8 +23,6 @@ export const banCommandHandler = (interaction: Interaction<CacheType>) => {
   const lengthParsed = length === undefined ? "Forever" : ms(length);
   const deleteMessages: boolean | undefined = (interaction.options.get("delete_messages", false)?.value as boolean) ?? false;
 
-  console.dir(user);
-
   const banEmbed = new EmbedBuilder()
     .setTitle(`${user.username} Was Banned`)
     .addFields([
